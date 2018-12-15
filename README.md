@@ -22,7 +22,7 @@ A la aplicación 'Compra/reserva de boletos de cine con Websockets' se le agrega
 3. Agregue las dependencias requeridas para usar Jedis, un cliente Java para REDIS:
 
 	```xml
-		<dependency>
+	   <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>2.9.0</version>
@@ -76,7 +76,8 @@ jedis.close();
 
 
 Para facilitar el manejo de las operaciones sobre REDIS, crearemos diversos métodos utilizando el [API DE JEDIS](http://tool.oschina.net/uploads/apidocs/jedis-2.1.0/redis/clients/jedis/Jedis.html) en una clase llamada *RedisMethods* en el paquete 'util'.
-1. Método 'SaveToREDIS' para guardar un valor en una llave de REDIS, para esto debe 
+1. Método 'saveToREDIS(key,data)' para guardar un valor en una llave de REDIS, para esto debe 
+	* Crear un Objeto Jedis a través del JedisUtil
 	* Iniciar una transacción REDIS, haciendo 'watch' sobre la llave.
 	* Después crear una transacción sobre el objeto jedis 
 		* `Transaction t1 = jedis.multi();`
@@ -85,7 +86,7 @@ Para facilitar el manejo de las operaciones sobre REDIS, crearemos diversos mét
 	* Y, ejecutar la transacción `t1.exec();`
 
  2. Puede comprobar la funcionalidad del método 'Save' ejecutándolo en una clase main independiente y enviándole una llave y un valor, posteriormente verifique en el terminal donde tiene abierta la interfaz de redis-cli si se registró la llave con su respectivo valor (Utilice el método [Get](https://redis.io/commands/getset) de redis).
- 3. Método 'getFromREDIS' Para a través de una llave su data correspondiente, para esto debe completar el siguiente código:
+ 3. Método 'getFromREDIS(key)' Para a través de una llave su data correspondiente, para esto debe completar el siguiente código:
 	 ``` java 
 	 public static String getFromREDIS(String key) {
 	     boolean intentar = true;
@@ -104,9 +105,9 @@ Para facilitar el manejo de las operaciones sobre REDIS, crearemos diversos mét
 		 }
 		return content;
 	}
-2. Para este ejercicio sólo se centralizará la información de los asientos de las funciones, esto se hará registrando como llave la función (de la forma cinemaName + functionDate + functionMovieName) y como valor la matriz de asientos en formato JSON.
-3. Ahora deberá crear un método 'buyTicketRedis' el cual retorne la matriz de booleanos asociada a la llave que representa a la función, recuerde que la matriz está guardada en como un string en formato JSON, es recomendable utilizar la librería 'jackson.databind' para la [conversión de JSON a objetos y viceversa](https://www.mkyong.com/java/jackson-2-convert-java-object-to-from-json/). 
-4. Cree el método 'getSeatsRedis' el cual deberá al igual que  'buyTicketRedis'  debe retornar la matriz de booleanos asociada a la llave que representa a la función pero sin modificarla, puede utilizar como parámetros de entrada el nombre del Cinema y la correspondiente *CinemaFunction* de modo que le sea útil como ayuda para formar la llave.
+3. Para este ejercicio sólo se centralizará la información de los asientos de las funciones, esto se hará registrando como llave la función (de la forma cinemaName + functionDate + functionMovieName) y como valor la matriz de asientos en formato JSON.
+4. Ahora deberá crear un método 'buyTicketRedis' el cual retorne la matriz de booleanos asociada a la llave que representa a la función, recuerde que la matriz está guardada en como un string en formato JSON, es recomendable utilizar la librería 'jackson.databind' para la [conversión de JSON a objetos y viceversa](https://www.mkyong.com/java/jackson-2-convert-java-object-to-from-json/). 
+5. Cree el método 'getSeatsRedis' el cual deberá al igual que  'buyTicketRedis'  debe retornar la matriz de booleanos asociada a la llave que representa a la función pero sin modificarla, puede utilizar como parámetros de entrada el nombre del Cinema y la correspondiente *CinemaFunction* de modo que le sea útil como ayuda para formar la llave.
 
 Ahora debe crear una nueva implementación de la clase CinemaPersitence pero llamada 'RedisCinemaPersistence', puede basarse en los mismos métodos de la clase 'InMemoryCinemaPersistence', pero se procederá a modificar algunos para que se consulté la información de las salas en REDIS.
 
