@@ -43,7 +43,7 @@ A la aplicación 'Compra/reserva de boletos de cine con Websockets' se le agrega
        
 
 3. Copie las clases provistas en los fuentes a la aplicación en las siguientes rutas:
-	* JedisUtil.java en */src/main/java/util/* 
+	* JedisUtil.java en */src/main/java/edu/eci/arsw/cinema/util/* 
 	* jedis.properties en */src/main/resources*
  
 	 (Éstas ya tiene la configuración para manejar un pool de conexiones al REDIS)
